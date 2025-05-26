@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Se não tiver passado por todas as etapas, volte à primeira
+
 if (
     empty($_SESSION['nome'])       ||
     empty($_SESSION['formacoes'])  ||
@@ -12,7 +12,6 @@ if (
     exit;
 }
 
-// Recebe tudo da sessão
 $nome         = $_SESSION['nome'];
 $nascimento   = $_SESSION['nascimento'];
 $idade        = $_SESSION['idade'];
@@ -24,7 +23,7 @@ $experiencias = $_SESSION['experiencias'];
 $habilidades  = $_SESSION['habilidades'];
 $referencias  = $_SESSION['referencias'];
 
-// Formata data de nascimento
+// formata data de Y-m-d para d/m/Y
 function formatDate($data) {
     $d = DateTime::createFromFormat('Y-m-d', $data);
     return $d ? $d->format('d/m/Y') : '';
@@ -44,13 +43,12 @@ $dataFormat = formatDate($nascimento);
 </head>
 <body>
   <div class="container py-4">
-    <!-- Nav de etapas -->
     <ul class="nav nav-pills mb-4">
-      <li class="nav-item"><a href="dados.php" class="nav-link">1. Dados</a></li>
-      <li class="nav-item"><a href="formacao.php" class="nav-link">2. Formação</a></li>
-      <li class="nav-item"><a href="experiencia.php" class="nav-link">3. Experiência</a></li>
-      <li class="nav-item"><a href="habilidades.php" class="nav-link">4. Habilidades</a></li>
-      <li class="nav-item"><a href="referencias.php" class="nav-link">5. Referências</a></li>
+      <li class="nav-item"><a href="dados.php"       class="nav-link">1. Dados</a></li>
+      <li class="nav-item"><a href="formacao.php"   class="nav-link">2. Formação</a></li>
+      <li class="nav-item"><a href="experiencia.php"class="nav-link">3. Experiência</a></li>
+      <li class="nav-item"><a href="habilidades.php"class="nav-link">4. Habilidades</a></li>
+      <li class="nav-item"><a href="referencias.php"class="nav-link">5. Referências</a></li>
       <li class="nav-item"><span class="nav-link active">6. Visualizar</span></li>
     </ul>
 
@@ -84,7 +82,7 @@ $dataFormat = formatDate($nascimento);
         <?php foreach ($experiencias as $item): ?>
           <li class="list-group-item">
             <strong><?= htmlspecialchars($item['empresa'] ?: '-') ?></strong><br>
-            <?= htmlspecialchars($item['cargo'] ?: '-') ?> &middot; <?= htmlspecialchars($item['periodo'] ?: '-') ?><br>
+            <?= htmlspecialchars($item['cargo'] ?: '-') ?> • <?= htmlspecialchars($item['periodo'] ?: '-') ?><br>
             <em><?= nl2br(htmlspecialchars($item['descricao'])) ?></em>
           </li>
         <?php endforeach; ?>
@@ -124,3 +122,4 @@ $dataFormat = formatDate($nascimento);
   ></script>
 </body>
 </html>
+

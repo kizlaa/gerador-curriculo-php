@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Ao submeter, guarda em $_SESSION e vai para Habilidades
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $empresas   = $_POST['empresas']   ?? [];
     $cargos     = $_POST['cargos']     ?? [];
@@ -17,7 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($e === '' && $c === '' && $p === '' && $d === '') {
             continue;
         }
-        $lista[] = ['empresa'=>$e,'cargo'=>$c,'periodo'=>$p,'descricao'=>$d];
+        $lista[] = [
+            'empresa'  => $e,
+            'cargo'    => $c,
+            'periodo'  => $p,
+            'descricao'=> $d
+        ];
     }
 
     $_SESSION['experiencias'] = $lista;
@@ -25,12 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Se a sessão não existir ou estiver vazia, garante um bloco padrão
-if (empty($_SESSION['experiencias'] ?? [])) {
-    $expSess = [['empresa'=>'','cargo'=>'','periodo'=>'','descricao'=>'']];
-} else {
-    $expSess = $_SESSION['experiencias'];
-}
+$expSess = !empty($_SESSION['experiencias'] ?? [])
+    ? $_SESSION['experiencias']
+    : [['empresa'=>'','cargo'=>'','periodo'=>'','descricao'=>'']];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -45,7 +46,6 @@ if (empty($_SESSION['experiencias'] ?? [])) {
 </head>
 <body>
   <div class="container py-4">
-    <!-- Nav de etapas -->
     <ul class="nav nav-pills mb-4">
       <li class="nav-item"><a class="nav-link disabled">1. Dados</a></li>
       <li class="nav-item"><a class="nav-link disabled">2. Formação</a></li>
@@ -102,8 +102,9 @@ if (empty($_SESSION['experiencias'] ?? [])) {
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
   ></script>
   <script>
+    // adiciona um novo bloco de experiência
     $(function(){
-      $('#add-experiencia').click(function(){
+      $('#add-experiencia').on('click', function(){
         const novo = $('.experiencia-item').first().clone();
         novo.find('input, textarea').val('');
         $('#experiencias').append(novo);

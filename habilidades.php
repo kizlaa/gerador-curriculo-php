@@ -1,21 +1,21 @@
 <?php
 session_start();
 
-// Ao submeter, salva em $_SESSION e vai para Referências
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $raw = $_POST['habilidades'] ?? [];
-    // filtra array removendo strings vazias
-    $_SESSION['habilidades'] = array_values(array_filter(array_map('trim', $raw), fn($v)=>$v!==''));
+    $_SESSION['habilidades'] = array_values(
+        array_filter(
+            array_map('trim', $raw),
+            fn($v) => $v !== ''
+        )
+    );
     header('Location: referencias.php');
     exit;
 }
 
-// Aqui a correção: se não existe OU está vazio, inicializa com um campo vazio
-if (empty($_SESSION['habilidades'] ?? [])) {
-    $habils = [''];
-} else {
-    $habils = $_SESSION['habilidades'];
-}
+$habils = empty($_SESSION['habilidades'] ?? [])
+    ? ['']
+    : $_SESSION['habilidades'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -55,9 +55,11 @@ if (empty($_SESSION['habilidades'] ?? [])) {
           </div>
         <?php endforeach; ?>
       </div>
+
       <button type="button" id="add-habilidade" class="btn btn-secondary btn-sm mb-4">
         + Habilidade
       </button>
+
       <div class="d-flex justify-content-between">
         <a href="experiencia.php" class="btn btn-outline-secondary">&laquo; Voltar</a>
         <button type="submit" class="btn btn-primary">Próximo &raquo;</button>
@@ -70,6 +72,7 @@ if (empty($_SESSION['habilidades'] ?? [])) {
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
   ></script>
   <script>
+    // adiciona um novo campo de habilidade
     $(function(){
       $('#add-habilidade').click(function(){
         const novo = $('.habilidade-item').first().clone();

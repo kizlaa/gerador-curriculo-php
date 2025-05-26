@@ -2,7 +2,6 @@
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
 
-// Se vier via POST, salva na sessão e redireciona
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['nome']      = trim($_POST['nome']      ?? '');
     $_SESSION['nascimento']= $_POST['nascimento'] ?? '';
@@ -10,14 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['email']     = trim($_POST['email']     ?? '');
     $_SESSION['telefone']  = trim($_POST['telefone']  ?? '');
     $_SESSION['resumo']    = trim($_POST['resumo']    ?? '');
-    // foto (nome temporário, não salvamos arquivo físico por ora)
     $_SESSION['foto_name'] = $_FILES['foto']['name'] ?? '';
-    // não salvamos o upload na pasta (pode ser implementado depois)
     header('Location: formacao.php');
     exit;
 }
 
-// Se já houver dados na sessão, pré-preenche
 $nome       = $_SESSION['nome']      ?? '';
 $nascimento = $_SESSION['nascimento']?? '';
 $idade      = $_SESSION['idade']     ?? '';
@@ -88,7 +84,7 @@ $resumo     = $_SESSION['resumo']    ?? '';
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    // Cálculo de idade instantâneo
+ // calcula e preenche a idade ao escolher a data
     $(function(){
       $('#nascimento').on('change', function(){
         const nasc = new Date(this.value), hoje = new Date();
@@ -101,3 +97,4 @@ $resumo     = $_SESSION['resumo']    ?? '';
   </script>
 </body>
 </html>
+

@@ -1,16 +1,13 @@
 <?php
 session_start();
 
-// Se veio POST, salva na sessão e segue para Experiência
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $raw = $_POST['formacoes'] ?? [];
-    // limpa valores vazios e espaços
     $_SESSION['formacoes'] = array_values(array_filter(array_map('trim', $raw), fn($v)=>$v!==''));
     header('Location: experiencia.php');
     exit;
 }
 
-// Se já houver sessão, usa-a, senão inicia com um campo vazio
 $formacoes = $_SESSION['formacoes'] ?? [''];
 ?>
 <!DOCTYPE html>
@@ -26,7 +23,6 @@ $formacoes = $_SESSION['formacoes'] ?? [''];
 </head>
 <body>
   <div class="container py-4">
-    <!-- Nav de etapas -->
     <ul class="nav nav-pills mb-4">
       <li class="nav-item"><a class="nav-link disabled">1. Dados</a></li>
       <li class="nav-item"><span class="nav-link active">2. Formação</span></li>

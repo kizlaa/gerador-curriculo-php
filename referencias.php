@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Ao submeter, salva em $_SESSION e vai para Visualizar
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nomes = $_POST['nomes'] ?? [];
+    $nomes    = $_POST['nomes']    ?? [];
     $contatos = $_POST['contatos'] ?? [];
     $relacoes = $_POST['relacoes'] ?? [];
 
@@ -22,12 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Garante ao menos um bloco
-if (empty($_SESSION['referencias'] ?? [])) {
-    $refs = [['nome'=>'','contato'=>'','relacao'=>'']];
-} else {
-    $refs = $_SESSION['referencias'];
-}
+$refs = empty($_SESSION['referencias'] ?? [])
+    ? [['nome'=>'','contato'=>'','relacao'=>'']]
+    : $_SESSION['referencias'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -42,7 +38,6 @@ if (empty($_SESSION['referencias'] ?? [])) {
 </head>
 <body>
   <div class="container py-4">
-    <!-- Nav de etapas -->
     <ul class="nav nav-pills mb-4">
       <li class="nav-item"><a class="nav-link disabled">1. Dados</a></li>
       <li class="nav-item"><a class="nav-link disabled">2. Formação</a></li>
@@ -93,8 +88,9 @@ if (empty($_SESSION['referencias'] ?? [])) {
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
   ></script>
   <script>
+    // adiciona um novo bloco de referência
     $(function(){
-      $('#add-referencia').click(function(){
+      $('#add-referencia').on('click', function(){
         const novo = $('.referencia-item').first().clone();
         novo.find('input').val('');
         $('#referencias').append(novo);
