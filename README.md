@@ -24,8 +24,7 @@ Estrutura:
 - `experiencia.php`  
 - `habilidades.php`  
 - `referencias.php`  
-- `visualizar.php`  
-- `css/`  
+- `visualizar.php`   
 - `js/`  
 
 
